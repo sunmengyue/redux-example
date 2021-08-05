@@ -1,25 +1,42 @@
-import logo from './logo.svg';
 import './App.css';
+import React, { useState } from 'react';
+import { connect, useDispatch, useSelector } from 'react-redux';
+import { updateMovies } from './redux/actions/updateMovies';
 
-function App() {
+function App(props) {
+  console.log(props);
+  const [movieName, setMovieName] = useState(null);
+  const state = useSelector((state) => state);
+  const dispatch = useDispatch();
+
+  const updateMovieHandler = () => {
+    dispatch(updateMovies(movieName));
+  };
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h2>Movie List</h2>
+      <input type="text" onChange={(e) => setMovieName(e.target.value)} />
+      <div>
+        {state.movies.map((movie, index) => (
+          <p key={index}>{movie.name}</p>
+        ))}
+      </div>
+      <button onClick={updateMovieHandler}>add movie</button>
     </div>
   );
 }
 
+// const mapStateToProps = (state) => {
+//   return {
+//     movies: state.movies,
+//   };
+// };
+
+// const dispatchToProps = (dispatch) => {
+//   return {
+//     updateMovies: () => dispatch(updateMovies),
+//   };
+// };
+
+//export default connect(mapStateToProps, dispatchToProps)(App);
 export default App;
